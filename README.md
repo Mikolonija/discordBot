@@ -22,7 +22,7 @@ DiscordBot is an application that automates the process of sending congratulator
 
 ## Quick Tour of the DiscordBot
 
-![App Preview](./documentation/app-preview.gif)
+![App Preview](./discordBotPreview.gif)
 
 ## Installation
 
@@ -40,14 +40,14 @@ DiscordBot is an application that automates the process of sending congratulator
 
 - Required to running the application.
 
-## Running the backend
+## Running the server
 
-1. **Navigate to the backend directory:**
+1. **Navigate to the server directory:**
 
-- `Open your terminal and move to the backend folder:`
+- `Open your terminal and move to the server folder:`
 
   ```sh
-  cd backend
+  cd server
   ```
 
 2. **Install dependencies:**
@@ -60,7 +60,7 @@ DiscordBot is an application that automates the process of sending congratulator
 
 3. **Create .env file:**
 
-- `Create a .env file in the root of the backend directory with the following environment variables:`
+- `Create a .env file in the root of the server directory with the following environment variables:`
 - `More info how get .env values read (## Instruction how setup .env values)`
 
   ```sh
@@ -143,14 +143,14 @@ DiscordBot is an application that automates the process of sending congratulator
 - For example: ./data/database.db
 - Paste the full path into your .env file.
 
-## Running the frontend
+## Running the client
 
-1. **Navigate to the frontend directory:**
+1. **Navigate to the client directory:**
 
-- `Open your terminal and move to the frontend folder:`
+- `Open your terminal and move to the client folder:`
 
   ```sh
-  cd frontend
+  cd client
   ```
 
 2. **Install dependencies:**
@@ -173,11 +173,11 @@ DiscordBot is an application that automates the process of sending congratulator
 
 - `Click the link provided in the terminal to view the project.`
 
-## Backend
+## Server
 
-- `Navigate to the backend directory`
+- `Navigate to the server directory`
 
-#### Format code in backend
+#### Format code
 
 - `Run the following command:`
 
@@ -185,7 +185,7 @@ DiscordBot is an application that automates the process of sending congratulator
   npm run format
   ```
 
-#### Run test in backend
+#### Run test
 
 - `Run the following command:`
 
@@ -206,38 +206,38 @@ DiscordBot is an application that automates the process of sending congratulator
 - **vitest**
 - **helmet**
 
-## Description of folders and files from backend
+#### Description of folders and files
 
-### `src/`
+#### `src/`
 
 - `app.ts`: Configures express app with routes and middleware.
 - `config.ts`: Stores app configuration.
 - `index.ts`: Initializes the app, connects to the database, and starts the server.
 
-### `src/database`
+#### `src/database`
 
 - `migrations`: Contains database migration files to create the database schema.
 - `index.ts`: Connects to the SQLite database using Kysely.
 - `migrate.ts`: Runs database migrations to ensure the schema is up-to-date with the latest version.
 - `types.ts`: Defines TypeScript types for the database tables.
 
-### `src/middleware`
+#### `src/middleware`
 
 - `errorHandler.ts`: Handles errors and sends JSON response with error message and status.
 
-### `src/modules`
+#### `src/modules`
 
 - `messages`: Manages messages, including repository, controller, service, router, and types for message data handling.
 - `profile`: Manages user profiles, including controller, router, and types for user data handling.
 - `sprints`: Manages sprints, including controller, repository, router, and types for sprint data handling.
 - `templates`: Manages templates, including controller, repository, router, and types for template data handling.
 
-### `src/services`
+#### `src/services`
 
 - `discord.ts`: Manages Discord bot interactions, including sending messages and checking usernames.
 - `giphy.ts`: Fetches a random GIF from the Giphy API.
 
-### `src/utils`
+#### `src/utils`
 
 - `createError.ts`: Utility to create error objects with a custom message and status code.
 - `createSuccess.ts`: Utility to create success response objects with a message and optional data.
@@ -246,7 +246,7 @@ DiscordBot is an application that automates the process of sending congratulator
 
 - `*`: Contains tests for API endpoints.
 
-### `/`
+#### `/`
 
 - `.env`: Environment variables.
 - `.gitignore`: Specifies files and directories to ignore in Git.
@@ -256,9 +256,9 @@ DiscordBot is an application that automates the process of sending congratulator
 - `tsconfig.json`: The typeScript configuration file.
 - `vitest.config.ts`: Configuration file for vitest.
 
-## Frontend
+## Client
 
-- `Navigate to the frontend directory`
+- `Navigate to the client directory`
 
 #### Format code
 
@@ -299,9 +299,9 @@ DiscordBot is an application that automates the process of sending congratulator
 - **styled-components**
 - **vite-plugin-compression2**
 
-## Description of folders and files from frontend
+#### Description of folders and files
 
-### `/public`
+#### `/public`
 
 - `logo.svg`: The project logo.
 
@@ -310,7 +310,7 @@ DiscordBot is an application that automates the process of sending congratulator
 - `e2e`: Contains end-to-end tests.
 - `support`: Holds configurations for Cypress tests.
 
-### `src/`
+#### `src/`
 
 - `config.ts`: Stores application configuration values.
 - `global.d.ts`: Global definitions.
@@ -374,7 +374,7 @@ DiscordBot is an application that automates the process of sending congratulator
 
 - `*`: Uses the sizes from breakpoints.ts to define responsive media queries, making it easier to implement responsive design in the application.
 
-### `/`
+#### `/`
 
 - `.gitignore`: Specifies files and directories to ignore in Git.
 - `.prettierrc`: Configuration file for code format.
