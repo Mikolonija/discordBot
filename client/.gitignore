@@ -1,5 +1,4 @@
 # Logs
-coverage
 logs
 *.log
 npm-debug.log*
@@ -11,6 +10,7 @@ node_modules
 dist
 dist-ssr
 *.local
+coverage
 .vscode/*
 !.vscode/extensions.json
 .idea
