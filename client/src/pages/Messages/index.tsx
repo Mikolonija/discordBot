@@ -11,6 +11,7 @@ import { defaultModal, IModalBody } from '@/utils/interface/modal';
 import { media } from '@/utils/media/devices_media';
 import { ButtonType } from '@/utils/types/buttons';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const Messages = () => {
   const [search, setSearch] = useState<{ submitSearch: string | null; inputSearch: string }>({
@@ -23,6 +24,8 @@ const Messages = () => {
   });
 
   const [showMessageTextModal, setShowMessageTextModal] = useState<IModalBody>(defaultModal);
+  const [showMessageDeleteModal, setShowMessageDeleteModal] = useState<IModalBody>(defaultModal);
+  const [messageDeletePath, setMessageDeletePath] = useState<string>('');
 
   const isTablet = useMediaQuery(media.tablet);
   const {
@@ -33,6 +36,11 @@ const Messages = () => {
   } = useFetch<{ success: boolean; message: string; data: IMessage[] }>(
     `${BACK_END_URL}/messages?sprintCode=${search.submitSearch ? search.submitSearch : ''}`,
     'GET',
+  );
+
+  const { loading: deleteMessageLoading, execute: executedDeleteMessage } = useFetch(
+    messageDeletePath,
+    'DELETE',
   );
 
   const headers: { name: string; colName: keyof IMessage }[] = isTablet
@@ -56,6 +64,30 @@ const Messages = () => {
   const openInfoMessageModal = (row: IMessage, show: boolean, titleText: string): void => {
     setMessageText({ message: row.message, gipthy: row.giphy });
     setShowMessageTextModal({ showDialog: show, title: titleText });
+  };
+  const openDeleteMessageModal = (row: IMessage, show: boolean, titleText: string): void => {
+    setMessageDeletePath(`${BACK_END_URL}/messages/${row.id}`);
+    setShowMessageDeleteModal({ showDialog: show, title: titleText });
+  };
+
+  const deleteMessage = async () => {
+    const { data, error } = await executedDeleteMessage();
+    if (data) {
+      setShowMessageDeleteModal(defaultModal);
+      toast.success('Message deleted successfully!', {
+        position: 'top-right',
+        theme: 'colored',
+        closeOnClick: true,
+      });
+      executeMessagesInfo();
+    }
+    if (error) {
+      toast.error(String(error), {
+        position: 'top-right',
+        closeOnClick: true,
+        theme: 'colored',
+      });
+    }
   };
 
   useEffect(() => {
@@ -92,9 +124,16 @@ const Messages = () => {
             actions={[
               {
                 testId: 'cy-info-message-btn',
-                label: 'Message text',
+                label: 'Details',
                 onClick: (row) => openInfoMessageModal(row, true, 'Message text'),
                 btnType: ButtonType.Edit,
+              },
+
+              {
+                testId: 'cy-delete-message-btn',
+                label: 'Delete',
+                onClick: (row) => openDeleteMessageModal(row, true, 'Delete message'),
+                btnType: ButtonType.Delete,
               },
             ]}
           />
@@ -102,19 +141,39 @@ const Messages = () => {
         <div className="profile-card">
           <ProfileCard refreshMessages={executeMessagesInfo} />
         </div>
-
-        <Modal
-          activeDiscardModal={false}
-          loader={false}
-          cancelDefaultText="Close"
-          modal={showMessageTextModal}
-        >
-          <div>
-            <p className="g-font-normal14 message-text">{displayValue(messageText.message)}</p>
-            {messageText.gipthy && <img src={messageText.gipthy} alt="" className="message-gif" />}
-          </div>
-        </Modal>
       </div>
+
+      <Modal
+        activeDiscardModal={false}
+        loader={false}
+        cancelDefaultText="Close"
+        modal={showMessageTextModal}
+      >
+        <div>
+          <p className="g-font-normal14 message-text">{displayValue(messageText.message)}</p>
+          {messageText.gipthy && <img src={messageText.gipthy} alt="" className="message-gif" />}
+        </div>
+      </Modal>
+      <Modal
+        activeDiscardModal={false}
+        loader={deleteMessageLoading}
+        cancelDefaultText="Cancel"
+        modal={showMessageDeleteModal}
+        submitButton={
+          <button
+            disabled={deleteMessageLoading}
+            data-testid="cy-confirm-delete-sprint-btn"
+            className="g-btn-delete-confirm g-font-bold14"
+            onClick={() => deleteMessage()}
+          >
+            Delete
+          </button>
+        }
+      >
+        <div>
+          <p className="g-font-normal14">Are you sure wand to delete?</p>
+        </div>
+      </Modal>
     </MessagesStyle>
   );
 };
