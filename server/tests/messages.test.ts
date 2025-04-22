@@ -17,6 +17,17 @@ describe('POST /messages', () => {
   });
 });
 
+describe('Getting random messages', () => {
+  it('Call the function without template id', async () => {
+    const response = await supertest(app).post('/messages').send({
+      username: 'modys',
+      sprintCode: 'SPR001',
+      channelId: 'CH001',
+    });
+    expect(response.status).toBe(400);
+  });
+});
+
 describe('GET /messages', () => {
   it('should return 200 and message list', async () => {
     const response = await supertest(app).get('/messages');
