@@ -81,3 +81,14 @@ export const isSprintCodeExist = async (
     .execute();
   return result.length > 0 ? result[0].title : false;
 };
+
+export const deleteMessageByID = async (
+  db: Database,
+  id: number
+): Promise<boolean> => {
+  const result = await db
+    .deleteFrom('message')
+    .where('id', '=', id)
+    .executeTakeFirstOrThrow();
+  return result.numDeletedRows > 0;
+};

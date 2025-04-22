@@ -1,10 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import { sendCongratulatoryMessage } from '@/modules/messages/service';
 import { Database } from '@/database';
-import { getMessages } from '@/modules/messages/repository';
+import { deleteMessageByID, getMessages } from '@/modules/messages/repository';
 import createError from '@/utils/createError';
 import createSuccess, { SuccessResponse } from '@/utils/createSuccess';
-import { IMessageBody, IMessageParams } from '@/modules/messages/types';
+import {
+  IMessageBody,
+  IMessageParams,
+  IMessagePath,
+} from '@/modules/messages/types';
 
 export const postMessage = async (
   db: Database,
@@ -47,6 +51,31 @@ export const getMessage = async (
     const successResponse: SuccessResponse = createSuccess(
       'Message get successfully',
       result
+    );
+    res.status(200).json(successResponse);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteMessage = async (
+  db: Database,
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  const params: IMessagePath = {
+    id: req.params.id,
+  };
+
+  if (!params.id || isNaN(Number(params.id))) {
+    throw createError('Invalid or missing sprint ID', 400);
+  }
+  try {
+    const isDeleted = await deleteMessageByID(db, Number(params.id));
+    if (!isDeleted) throw createError('Sprint not found', 404);
+    const successResponse: SuccessResponse = createSuccess(
+      'Message deleted successfully'
     );
     res.status(200).json(successResponse);
   } catch (error) {
