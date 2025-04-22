@@ -193,6 +193,14 @@ DiscordBot is an application that automates the process of sending congratulator
   npm run test
   ```
 
+#### Run test coverage
+
+- `Run the following command:`
+
+  ```sh
+  npm run test:coverage
+  ```
+
 #### Libraries Used:
 
 - **better-sqlite3**
@@ -282,6 +290,14 @@ DiscordBot is an application that automates the process of sending congratulator
 
   ```sh
   npm run test:e2e
+  ```
+
+  #### Run test coverage
+
+- `Run the following command:`
+
+  ```sh
+  npm run test:coverage
   ```
 
 #### Libraries Used:
