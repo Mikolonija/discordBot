@@ -9,6 +9,9 @@ export interface IMessageParams {
   username: string | undefined;
   sprintCode: string | undefined;
 }
+export interface IMessagePath {
+  id: string;
+}
 
 export interface IMessage {
   id: number;
