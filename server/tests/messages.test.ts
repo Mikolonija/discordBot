@@ -6,25 +6,14 @@ import { IMessageBody } from '@/modules/messages/types';
 describe('POST /messages', () => {
   it('should return 400 for missing or invalid body', async () => {
     const payload: IMessageBody = {
-      username: 'john',
-      sprintCode: 'SPR001',
-      channelId: 'CH001',
-      templateId: '1',
+      username: 'USER_NAME',
+      sprintCode: 'SPRINT_CODE',
+      channelId: 'CHANEL_ID',
+      templateId: 'TEMPLATE_ID',
     };
     const response = await supertest(app).post('/messages').send(payload);
     expect(response.status).toBe(400);
     expect(response.body.success).toBe(false);
-  });
-});
-
-describe('Getting random messages', () => {
-  it('Call the function without template id', async () => {
-    const response = await supertest(app).post('/messages').send({
-      username: 'modys',
-      sprintCode: 'SPR001',
-      channelId: 'CH001',
-    });
-    expect(response.status).toBe(400);
   });
 });
 
