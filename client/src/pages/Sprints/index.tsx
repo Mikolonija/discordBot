@@ -1,10 +1,11 @@
 import { Modal } from '@/components/Modal';
 import Pagination from '@/components/Pagination';
 import Table from '@/components/Table';
-import { BACK_END_URL, LIMIT, OFFSET } from '@/config';
+import { BACK_END_URL } from '@/config';
 import useFetch from '@/hooks/useFetch';
 import { SprintsStyle } from '@/pages/Sprints/style';
 import { defaultModal, IModalBody } from '@/utils/interface/modal';
+import { defaultPagination, IPagination } from '@/utils/interface/pagination';
 import {
   defaultSendSprintValues,
   ISprint,
@@ -20,7 +21,7 @@ const Sprints = () => {
   const [showDeleteSprintModal, setShowDeleteSprintModal] = useState<IModalBody>(defaultModal);
   const [showEditSprintModal, setShowEditSprintModal] = useState<IModalBody>(defaultModal);
 
-  const [sprintsPagination, setSprintsPagination] = useState({ limit: LIMIT, offset: OFFSET });
+  const [sprintsPagination, setSprintsPagination] = useState<IPagination>(defaultPagination);
 
   const [sendValues, setSendValues] = useState<ISprintBody>(defaultSendSprintValues);
   const [lastFailedValues, setLastFailedValues] = useState<ISprintBody>(defaultSendSprintValues);
@@ -111,7 +112,7 @@ const Sprints = () => {
         theme: 'colored',
         closeOnClick: true,
       });
-      setSprintsPagination({ limit: LIMIT, offset: OFFSET });
+      setSprintsPagination(defaultPagination);
     }
     if (error) {
       toast.error(String(error), {

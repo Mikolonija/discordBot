@@ -59,6 +59,6 @@ export const MessagesStyle = styled.main`
 
   .messages-footer {
     display: flex;
-    padding: var(--md-spacing) 0 var(--big-spacing) 0;
+    padding: var(--md-spacing) 0 var(--md-spacing) 0;
   }
 `;

@@ -40,7 +40,6 @@ export const TableStyle = styled.table`
   tbody tr {
     display: table;
     width: 100%;
-
     height: auto;
     table-layout: fixed;
   }
