@@ -76,13 +76,14 @@ const Table = <T,>(props: TableProps<T>) => {
             </td>
           </tr>
         )}
-        {data && data.length === 0 ? (
+        {!loader && data && data.length === 0 ? (
           <tr data-testid="cy-table-no-data">
             <td colSpan={colSpan} className="g-font-bold14 default-row">
               No data
             </td>
           </tr>
         ) : (
+          !loader &&
           data?.map((row, i) => (
             <tr className="g-font-normal14" key={i}>
               {header.map((col, index) => {
