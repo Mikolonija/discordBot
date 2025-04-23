@@ -2,13 +2,14 @@ import { Modal } from '@/components/Modal';
 import Pagination from '@/components/Pagination';
 import ProfileCard from '@/components/ProfileCard';
 import Table from '@/components/Table';
-import { BACK_END_URL, LIMIT, OFFSET } from '@/config';
+import { BACK_END_URL, PAGE_LIMIT_DEFAULT } from '@/config';
 import useFetch from '@/hooks/useFetch';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import { MessagesStyle } from '@/pages/Messages/style';
 import { displayValue } from '@/utils/helpers';
 import { IMessage, IMessageResult } from '@/utils/interface/message';
 import { defaultModal, IModalBody } from '@/utils/interface/modal';
+import { defaultPagination, IPagination } from '@/utils/interface/pagination';
 import { media } from '@/utils/media/devices_media';
 import { ButtonType } from '@/utils/types/buttons';
 import { useEffect, useState } from 'react';
@@ -24,7 +25,7 @@ const Messages = () => {
     gipthy: '',
   });
 
-  const [messagePagination, setMessagePagination] = useState({ limit: LIMIT, offset: OFFSET });
+  const [messagePagination, setMessagePagination] = useState<IPagination>(defaultPagination);
   const [showMessageTextModal, setShowMessageTextModal] = useState<IModalBody>(defaultModal);
   const [messageDeletePath, setMessageDeletePath] = useState<string>('');
   const [showMessageDeleteModal, setShowMessageDeleteModal] = useState<IModalBody>(defaultModal);
@@ -62,7 +63,7 @@ const Messages = () => {
   const findMessages = () => {
     if (messagesError === null) {
       setSearch((prev) => ({ ...prev, submitSearch: prev.inputSearch }));
-      setMessagePagination({ limit: LIMIT, offset: OFFSET });
+      setMessagePagination(defaultPagination);
     }
   };
 
@@ -85,7 +86,7 @@ const Messages = () => {
         theme: 'colored',
         closeOnClick: true,
       });
-      setMessagePagination({ limit: LIMIT, offset: OFFSET });
+      setMessagePagination(defaultPagination);
     }
     if (error) {
       toast.error(String(error), {
@@ -143,7 +144,7 @@ const Messages = () => {
               },
             ]}
           />
-          {!messagesLoading && (
+          {message?.data.total !== PAGE_LIMIT_DEFAULT && !messagesLoading && (
             <div className="messages-footer">
               <Pagination
                 total={message?.data.total || 0}

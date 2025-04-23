@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { MAX_VISIBLE_PAGES } from '@/config';
+import { MAX_VISIBLE_PAGES_DEFAULT } from '@/config';
 import { PaginationStyle } from '@/components/Pagination/style';
 
 interface PaginationProps {
@@ -42,7 +42,11 @@ const Pagination: React.FC<PaginationProps> = ({ total, limit, offset, onPageCha
 
   const pageNumbers = useMemo(() => {
     if (totalPages == 0) return [];
-    const { startPage, endPage } = calculatePageRange(currentPage, totalPages, MAX_VISIBLE_PAGES);
+    const { startPage, endPage } = calculatePageRange(
+      currentPage,
+      totalPages,
+      MAX_VISIBLE_PAGES_DEFAULT,
+    );
     return generatePageNumbers(startPage, endPage);
   }, [currentPage, totalPages]);
 
