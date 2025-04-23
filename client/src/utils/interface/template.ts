@@ -8,3 +8,8 @@ export interface ITemplateBody {
 export const defaultTemplateBody: ITemplateBody = {
   text: '',
 };
+
+export interface ITemplateResult {
+  total: number;
+  items: ITemplates[];
+}
