@@ -60,7 +60,10 @@ const Messages = () => {
       ];
 
   const findMessages = () => {
-    setSearch((prev) => ({ ...prev, submitSearch: prev.inputSearch }));
+    if (messagesError === null && search.inputSearch !== search.submitSearch) {
+      setSearch((prev) => ({ ...prev, submitSearch: prev.inputSearch }));
+      setMessagePagination({ limit: LIMIT, offset: OFFSET });
+    }
   };
 
   const openInfoMessageModal = (row: IMessage, show: boolean, titleText: string): void => {
