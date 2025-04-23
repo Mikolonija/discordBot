@@ -60,7 +60,7 @@ const Messages = () => {
       ];
 
   const findMessages = () => {
-    if (messagesError === null && search.inputSearch !== search.submitSearch) {
+    if (messagesError === null) {
       setSearch((prev) => ({ ...prev, submitSearch: prev.inputSearch }));
       setMessagePagination({ limit: LIMIT, offset: OFFSET });
     }
@@ -113,7 +113,7 @@ const Messages = () => {
             placeholder="Sprint code"
           />
           <button
-            disabled={messagesError !== null || search.inputSearch === search.submitSearch}
+            disabled={messagesError !== null}
             data-testid="cy-message-search-btn"
             className="g-btn-submit g-font-bold14"
             onClick={() => findMessages()}
