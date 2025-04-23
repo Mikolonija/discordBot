@@ -1,23 +1,25 @@
-import 'dotenv/config';
 import * as path from 'node:path';
 import * as fss from 'fs';
 import fs from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { Migrator, FileMigrationProvider } from 'kysely';
 import { connectToDatabase } from '@/database/index';
+import 'dotenv/config';
 
-const { DATABASE_URL } = process.env;
 const MIGRATIONS_PATH = './migrations';
+const { DATABASE_URL } = process.env;
 
-async function migrateToLatest() {
-  if (typeof DATABASE_URL !== 'string') {
+export async function migrateToLatest(databaseUrl?: string): Promise<void> {
+  if (!databaseUrl || typeof databaseUrl !== 'string') {
     throw new Error('Provide DATABASE_URL in your environment variables.');
   }
-  const directory = path.dirname(DATABASE_URL);
+
+  const directory = path.dirname(databaseUrl);
   if (!fss.existsSync(directory)) {
     fss.mkdirSync(directory, { recursive: true });
   }
-  const db = connectToDatabase(DATABASE_URL);
+
+  const db = connectToDatabase(databaseUrl);
   const dirname = path.dirname(fileURLToPath(import.meta.url));
   const migrator = new Migrator({
     db,
@@ -31,7 +33,7 @@ async function migrateToLatest() {
   const { error, results } = await migrator.migrateToLatest();
 
   if (!results?.length) {
-    console.log('No migrations to run.');
+    throw new Error('No migrations to run.');
   }
 
   results?.forEach((it) => {
@@ -40,17 +42,21 @@ async function migrateToLatest() {
         `Migration "${it.migrationName}" was executed successfully.`
       );
     } else if (it.status === 'Error') {
-      console.error(`Failed to execute migration "${it.migrationName}".`);
+      throw new Error('Failed to execute migration');
     }
   });
 
   if (error) {
-    console.error('Failed to migrate.');
-    console.error(error);
-    process.exit(1);
+    throw new Error('Failed to migrate.');
   }
 
   await db.destroy();
 }
 
-migrateToLatest();
+migrateToLatest(DATABASE_URL as string)
+  .then(() => {
+    console.log('Migration completed');
+  })
+  .catch((err) => {
+    console.error(err);
+  });
