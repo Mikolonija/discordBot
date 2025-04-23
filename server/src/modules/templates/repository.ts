@@ -3,6 +3,7 @@ import {
   ITemplate,
   ITemplateBody,
   ITemplateParams,
+  ITemplateResult,
 } from '@/modules/templates/types';
 
 export const createNewTemplate = async (db: Database, body: ITemplateBody) => {
@@ -14,15 +15,30 @@ export const createNewTemplate = async (db: Database, body: ITemplateBody) => {
   return newTemplate;
 };
 
-export const getAllTemplates = async (db: Database): Promise<ITemplate[]> => {
-  const templates = await db
-    .selectFrom('template')
-    .selectAll()
-    .orderBy('id', 'desc')
-    .execute();
-  return templates;
-};
+export const getAllTemplates = async (
+  db: Database,
+  params: ITemplateParams
+): Promise<ITemplateResult> => {
+  const limit = params.limit ? Number(params.limit) : undefined;
+  const offset = params.offset ? Number(params.offset) : undefined;
+  const baseQuery = db.selectFrom('template').selectAll().orderBy('id', 'desc');
+  const paginatedQuery =
+    limit !== undefined && offset !== undefined
+      ? baseQuery.limit(limit).offset(offset)
+      : baseQuery;
 
+  const [totalResult, items] = await Promise.all([
+    db
+      .selectFrom('template')
+      .select((eb) => eb.fn.countAll().as('count'))
+      .executeTakeFirst(),
+    paginatedQuery.execute(),
+  ]);
+  return {
+    total: Number(totalResult?.count || 0),
+    items,
+  };
+};
 export const updateTemplateByID = async (
   db: Database,
   params: ITemplateParams,
