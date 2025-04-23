@@ -2,7 +2,7 @@ import { Modal } from '@/components/Modal';
 import Pagination from '@/components/Pagination';
 import ProfileCard from '@/components/ProfileCard';
 import Table from '@/components/Table';
-import { BACK_END_URL, PAGE_LIMIT_DEFAULT } from '@/config';
+import { BACK_END_URL } from '@/config';
 import useFetch from '@/hooks/useFetch';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import { MessagesStyle } from '@/pages/Messages/style';
@@ -86,7 +86,7 @@ const Messages = () => {
         theme: 'colored',
         closeOnClick: true,
       });
-      setMessagePagination(defaultPagination);
+      setMessagePagination({ limit: defaultPagination.limit, offset: defaultPagination.offset });
     }
     if (error) {
       toast.error(String(error), {
@@ -144,7 +144,7 @@ const Messages = () => {
               },
             ]}
           />
-          {message?.data.total !== PAGE_LIMIT_DEFAULT && !messagesLoading && (
+          {message?.data && message?.data.total > defaultPagination.limit && !messagesLoading && (
             <div className="messages-footer">
               <Pagination
                 total={message?.data.total || 0}

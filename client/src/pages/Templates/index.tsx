@@ -109,7 +109,7 @@ const Templates = () => {
         theme: 'colored',
         closeOnClick: true,
       });
-      setTemplatesPagination(defaultPagination);
+      setTemplatesPagination({ limit: defaultPagination.limit, offset: defaultPagination.offset });
     }
     if (error) {
       toast.error(String(error), {
