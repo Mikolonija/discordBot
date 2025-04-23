@@ -12,3 +12,7 @@ export interface ISprintBody {
   code: string;
   title: string;
 }
+export interface ISprintResult {
+  total: number;
+  items: ISprint[];
+}

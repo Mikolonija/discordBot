@@ -1,10 +1,16 @@
 import { Modal } from '@/components/Modal';
+import Pagination from '@/components/Pagination';
 import Table from '@/components/Table';
-import { BACK_END_URL } from '@/config';
+import { BACK_END_URL, LIMIT, OFFSET } from '@/config';
 import useFetch from '@/hooks/useFetch';
 import { SprintsStyle } from '@/pages/Sprints/style';
 import { defaultModal, IModalBody } from '@/utils/interface/modal';
-import { defaultSendSprintValues, ISprint, ISprintBody } from '@/utils/interface/sprint';
+import {
+  defaultSendSprintValues,
+  ISprint,
+  ISprintBody,
+  ISprintResult,
+} from '@/utils/interface/sprint';
 import { ButtonType } from '@/utils/types/buttons';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -13,6 +19,8 @@ const Sprints = () => {
   const [showAddSprintModal, setShowAddSprintModal] = useState<IModalBody>(defaultModal);
   const [showDeleteSprintModal, setShowDeleteSprintModal] = useState<IModalBody>(defaultModal);
   const [showEditSprintModal, setShowEditSprintModal] = useState<IModalBody>(defaultModal);
+
+  const [sprintsPagination, setSprintsPagination] = useState({ limit: LIMIT, offset: OFFSET });
 
   const [sendValues, setSendValues] = useState<ISprintBody>(defaultSendSprintValues);
   const [lastFailedValues, setLastFailedValues] = useState<ISprintBody>(defaultSendSprintValues);
@@ -25,8 +33,8 @@ const Sprints = () => {
     loading: sprintsLoading,
     error: sprintsError,
     execute: executeSprintsInfo,
-  } = useFetch<{ success: boolean; message: string; data: ISprint[] }>(
-    `${BACK_END_URL}/sprints`,
+  } = useFetch<{ success: boolean; message: string; data: ISprintResult }>(
+    `${BACK_END_URL}/sprints?limit=${sprintsPagination.limit}&offset=${sprintsPagination.offset}`,
     'GET',
   );
 
@@ -103,7 +111,7 @@ const Sprints = () => {
         theme: 'colored',
         closeOnClick: true,
       });
-      executeSprintsInfo();
+      setSprintsPagination({ limit: LIMIT, offset: OFFSET });
     }
     if (error) {
       toast.error(String(error), {
@@ -133,13 +141,13 @@ const Sprints = () => {
 
   useEffect(() => {
     executeSprintsInfo();
-  }, []);
+  }, [sprintsPagination]);
 
   return (
     <SprintsStyle>
       <div className="g-container">
         <Table<ISprint>
-          data={sprints?.data}
+          data={sprints?.data.items}
           loader={sprintsLoading}
           error={sprintsError}
           header={[
@@ -163,15 +171,25 @@ const Sprints = () => {
           ]}
         />
         {!sprintsLoading && (
-          <div className="btn-add-position">
-            <button
-              disabled={sprintsError !== null}
-              data-testid="cy-add-sprint-btn"
-              className="g-btn-submit g-font-bold14"
-              onClick={() => openAddSprintModal(true, 'Create New Sprint')}
-            >
-              Add Sprint
-            </button>
+          <div className="sprints-footer">
+            <Pagination
+              total={sprints?.data.total || 0}
+              limit={sprintsPagination.limit}
+              offset={sprintsPagination.offset}
+              onPageChange={(newOffset) =>
+                setSprintsPagination((prev) => ({ ...prev, offset: newOffset }))
+              }
+            />
+            <div className="btn-add-position">
+              <button
+                disabled={sprintsError !== null}
+                data-testid="cy-add-sprint-btn"
+                className="g-btn-submit g-font-bold14"
+                onClick={() => openAddSprintModal(true, 'Create New Sprint')}
+              >
+                Add Sprint
+              </button>
+            </div>
           </div>
         )}
       </div>
