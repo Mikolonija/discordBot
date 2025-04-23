@@ -1,10 +1,11 @@
 import { Modal } from '@/components/Modal';
 import Pagination from '@/components/Pagination';
 import Table from '@/components/Table';
-import { BACK_END_URL, LIMIT, OFFSET } from '@/config';
+import { BACK_END_URL } from '@/config';
 import useFetch from '@/hooks/useFetch';
 import { TemplatesStyle } from '@/pages/Templates/style';
 import { defaultModal, IModalBody } from '@/utils/interface/modal';
+import { defaultPagination } from '@/utils/interface/pagination';
 import {
   defaultTemplateBody,
   ITemplateBody,
@@ -23,7 +24,7 @@ const Templates = () => {
   const [sendValues, setSendValues] = useState<ITemplateBody>(defaultTemplateBody);
   const [lastFailedValues, setLastFailedValues] = useState<ITemplateBody>(defaultTemplateBody);
 
-  const [templatesPagination, setTemplatesPagination] = useState({ limit: LIMIT, offset: OFFSET });
+  const [templatesPagination, setTemplatesPagination] = useState(defaultPagination);
 
   const [templateDeletePath, setTemplateDeletePath] = useState<string>('');
   const [templatePatchPath, setTemplatePatchPath] = useState<string>('');
@@ -108,7 +109,7 @@ const Templates = () => {
         theme: 'colored',
         closeOnClick: true,
       });
-      setTemplatesPagination({ limit: LIMIT, offset: OFFSET });
+      setTemplatesPagination(defaultPagination);
     }
     if (error) {
       toast.error(String(error), {
