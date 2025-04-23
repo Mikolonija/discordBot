@@ -17,7 +17,7 @@ const createMessage = (
 export const fakeMessagesEmpty = {
   success: true,
   message: '',
-  data: { total: 0, items: [{}] },
+  data: { total: 0, items: [] },
 };
 
 export const fakeMessagesSearchResult = {
