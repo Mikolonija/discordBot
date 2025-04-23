@@ -3,7 +3,7 @@ import { media } from '@/utils/media/devices_media';
 
 export const ModalStyle = styled.div`
   position: fixed;
-  z-index: 10000;
+  z-index: 100;
   background: ${(props) => props.theme.modalOutsideBgColor};
   left: 0;
   right: 0;

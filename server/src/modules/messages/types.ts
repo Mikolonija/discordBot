@@ -6,9 +6,12 @@ export interface IMessageBody {
 }
 
 export interface IMessageParams {
-  username: string | undefined;
-  sprintCode: string | undefined;
+  username?: string;
+  sprintCode?: string;
+  limit?: string;
+  offset?: string;
 }
+
 export interface IMessagePath {
   id: string;
 }
@@ -22,4 +25,8 @@ export interface IMessage {
   giphy: string;
   channelId: string;
   createdAt: string;
+}
+export interface IMessageResult {
+  total: number;
+  items: IMessage[];
 }

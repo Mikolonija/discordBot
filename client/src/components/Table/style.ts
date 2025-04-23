@@ -103,7 +103,7 @@ export const TableStyle = styled.table`
   }
   .skeleton-loader {
     width: 100%;
-    height: 24px;
+    height: 280px;
     border-radius: var(--min-radius);
     animation: pulse 1.5s infinite ease-in-out;
   }

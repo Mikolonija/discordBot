@@ -27,3 +27,7 @@ export const messageSendDefaultValues: IMessageSendValues = {
   sprintCode: '',
   templateId: '',
 };
+export interface IMessageResult {
+  total: number;
+  items: IMessage[];
+}

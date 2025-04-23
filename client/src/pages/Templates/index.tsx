@@ -1,10 +1,16 @@
 import { Modal } from '@/components/Modal';
+import Pagination from '@/components/Pagination';
 import Table from '@/components/Table';
-import { BACK_END_URL } from '@/config';
+import { BACK_END_URL, LIMIT, OFFSET } from '@/config';
 import useFetch from '@/hooks/useFetch';
 import { TemplatesStyle } from '@/pages/Templates/style';
 import { defaultModal, IModalBody } from '@/utils/interface/modal';
-import { defaultTemplateBody, ITemplateBody, ITemplates } from '@/utils/interface/template';
+import {
+  defaultTemplateBody,
+  ITemplateBody,
+  ITemplateResult,
+  ITemplates,
+} from '@/utils/interface/template';
 import { ButtonType } from '@/utils/types/buttons';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -17,6 +23,8 @@ const Templates = () => {
   const [sendValues, setSendValues] = useState<ITemplateBody>(defaultTemplateBody);
   const [lastFailedValues, setLastFailedValues] = useState<ITemplateBody>(defaultTemplateBody);
 
+  const [templatesPagination, setTemplatesPagination] = useState({ limit: LIMIT, offset: OFFSET });
+
   const [templateDeletePath, setTemplateDeletePath] = useState<string>('');
   const [templatePatchPath, setTemplatePatchPath] = useState<string>('');
 
@@ -25,8 +33,8 @@ const Templates = () => {
     loading: templatesLoading,
     error: templatesError,
     execute: executeTemplatesInfo,
-  } = useFetch<{ success: boolean; message: string; data: ITemplates[] }>(
-    `${BACK_END_URL}/templates`,
+  } = useFetch<{ success: boolean; message: string; data: ITemplateResult }>(
+    `${BACK_END_URL}/templates?limit=${templatesPagination.limit}&offset=${templatesPagination.offset}`,
     'GET',
   );
 
@@ -100,7 +108,7 @@ const Templates = () => {
         theme: 'colored',
         closeOnClick: true,
       });
-      executeTemplatesInfo();
+      setTemplatesPagination({ limit: LIMIT, offset: OFFSET });
     }
     if (error) {
       toast.error(String(error), {
@@ -130,13 +138,13 @@ const Templates = () => {
 
   useEffect(() => {
     executeTemplatesInfo();
-  }, []);
+  }, [templatesPagination]);
 
   return (
     <TemplatesStyle>
       <div className="g-container ">
         <Table<ITemplates>
-          data={templates?.data}
+          data={templates?.data.items}
           loader={templatesLoading}
           error={templatesError}
           header={[
@@ -159,15 +167,26 @@ const Templates = () => {
           ]}
         />
         {!templatesLoading && (
-          <div className="btn-add-position">
-            <button
-              disabled={templatesError !== null}
-              data-testid="cy-add-template-btn"
-              className="g-btn-submit g-font-bold14"
-              onClick={() => openAddTemplateModal(true, 'Create New Template')}
-            >
-              Add Template
-            </button>
+          <div className="template-footer">
+            <Pagination
+              total={templates?.data.total || 0}
+              limit={templatesPagination.limit}
+              offset={templatesPagination.offset}
+              onPageChange={(newOffset) =>
+                setTemplatesPagination((prev) => ({ ...prev, offset: newOffset }))
+              }
+            />
+
+            <div className="btn-add-position">
+              <button
+                disabled={templatesError !== null}
+                data-testid="cy-add-template-btn"
+                className="g-btn-submit g-font-bold14"
+                onClick={() => openAddTemplateModal(true, 'Create New Template')}
+              >
+                Add Template
+              </button>
+            </div>
           </div>
         )}
       </div>

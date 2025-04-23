@@ -1,6 +1,10 @@
 import { Database } from '@/database';
 import createError from '@/utils/createError';
-import { IMessageParams, IMessage } from '@/modules/messages/types';
+import {
+  IMessageParams,
+  IMessage,
+  IMessageResult,
+} from '@/modules/messages/types';
 
 export const insertMessage = async (
   db: Database,
@@ -46,27 +50,35 @@ export const getMessageTemplate = async (
 export const getMessages = async (
   db: Database,
   params: IMessageParams
-): Promise<IMessage[]> => {
-  let query = db
+): Promise<IMessageResult> => {
+  const limit = params.limit ? Number(params.limit) : undefined;
+  const offset = params.offset ? Number(params.offset) : undefined;
+  const baseQuery = db
     .selectFrom('message')
-    .select([
-      'id',
-      'username',
-      'sprintCode',
-      'templateId',
-      'message',
-      'giphy',
-      'channelId',
-      'createdAt',
-    ])
+    .selectAll()
+    .where('username', 'like', `${params.username ?? ''}%`)
+    .where('sprintCode', 'like', `${params.sprintCode ?? ''}%`)
     .orderBy('createdAt', 'desc');
-  if (params.username) {
-    query = query.where('username', 'like', `${params.username}%`);
-  }
-  if (params.sprintCode) {
-    query = query.where('sprintCode', 'like', `${params.sprintCode}%`);
-  }
-  return await query.execute();
+
+  const paginatedQuery =
+    limit !== undefined && offset !== undefined
+      ? baseQuery.limit(limit).offset(offset)
+      : baseQuery;
+
+  const [totalResult, items] = await Promise.all([
+    db
+      .selectFrom('message')
+      .select((eb) => eb.fn.countAll().as('count'))
+      .where('username', 'like', `${params.username ?? ''}%`)
+      .where('sprintCode', 'like', `${params.sprintCode ?? ''}%`)
+      .executeTakeFirst(),
+    paginatedQuery.execute(),
+  ]);
+
+  return {
+    total: Number(totalResult?.count || 0),
+    items,
+  };
 };
 
 export const isSprintCodeExist = async (

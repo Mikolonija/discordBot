@@ -37,11 +37,16 @@ export const postSprint = async (
 
 export const getSprint = async (
   db: Database,
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const result = await getAllSprints(db);
+    const params: ISprintParams = {
+      limit: req.query.limit?.toString(),
+      offset: req.query.offset?.toString(),
+    };
+    const result = await getAllSprints(db, params);
     const successResponse: SuccessResponse = createSuccess(
       'Sprint get successfully',
       result

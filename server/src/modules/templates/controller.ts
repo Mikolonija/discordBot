@@ -35,11 +35,16 @@ export const postTemplate = async (
 
 export const getTemplate = async (
   db: Database,
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
+  const params: ITemplateParams = {
+    limit: req.query.limit?.toString(),
+    offset: req.query.offset?.toString(),
+  };
   try {
-    const result = await getAllTemplates(db);
+    const result = await getAllTemplates(db, params);
     const successResponse: SuccessResponse = createSuccess(
       'Templates get successfully',
       result

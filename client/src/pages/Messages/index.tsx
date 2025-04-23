@@ -1,12 +1,13 @@
 import { Modal } from '@/components/Modal';
+import Pagination from '@/components/Pagination';
 import ProfileCard from '@/components/ProfileCard';
 import Table from '@/components/Table';
-import { BACK_END_URL } from '@/config';
+import { BACK_END_URL, LIMIT, OFFSET } from '@/config';
 import useFetch from '@/hooks/useFetch';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import { MessagesStyle } from '@/pages/Messages/style';
 import { displayValue } from '@/utils/helpers';
-import { IMessage } from '@/utils/interface/message';
+import { IMessage, IMessageResult } from '@/utils/interface/message';
 import { defaultModal, IModalBody } from '@/utils/interface/modal';
 import { media } from '@/utils/media/devices_media';
 import { ButtonType } from '@/utils/types/buttons';
@@ -23,9 +24,10 @@ const Messages = () => {
     gipthy: '',
   });
 
+  const [messagePagination, setMessagePagination] = useState({ limit: LIMIT, offset: OFFSET });
   const [showMessageTextModal, setShowMessageTextModal] = useState<IModalBody>(defaultModal);
-  const [showMessageDeleteModal, setShowMessageDeleteModal] = useState<IModalBody>(defaultModal);
   const [messageDeletePath, setMessageDeletePath] = useState<string>('');
+  const [showMessageDeleteModal, setShowMessageDeleteModal] = useState<IModalBody>(defaultModal);
 
   const isTablet = useMediaQuery(media.tablet);
   const {
@@ -33,8 +35,8 @@ const Messages = () => {
     loading: messagesLoading,
     error: messagesError,
     execute: executeMessagesInfo,
-  } = useFetch<{ success: boolean; message: string; data: IMessage[] }>(
-    `${BACK_END_URL}/messages?sprintCode=${search.submitSearch ? search.submitSearch : ''}`,
+  } = useFetch<{ success: boolean; message: string; data: IMessageResult }>(
+    `${BACK_END_URL}/messages?limit=${messagePagination.limit}&offset=${messagePagination.offset}${search.submitSearch ? `&sprintCode=${search.submitSearch}` : ''}`,
     'GET',
   );
 
@@ -65,6 +67,7 @@ const Messages = () => {
     setMessageText({ message: row.message, gipthy: row.giphy });
     setShowMessageTextModal({ showDialog: show, title: titleText });
   };
+
   const openDeleteMessageModal = (row: IMessage, show: boolean, titleText: string): void => {
     setMessageDeletePath(`${BACK_END_URL}/messages/${row.id}`);
     setShowMessageDeleteModal({ showDialog: show, title: titleText });
@@ -79,7 +82,7 @@ const Messages = () => {
         theme: 'colored',
         closeOnClick: true,
       });
-      executeMessagesInfo();
+      setMessagePagination({ limit: LIMIT, offset: OFFSET });
     }
     if (error) {
       toast.error(String(error), {
@@ -92,7 +95,7 @@ const Messages = () => {
 
   useEffect(() => {
     executeMessagesInfo();
-  }, [search.submitSearch]);
+  }, [search.submitSearch, messagePagination]);
 
   return (
     <MessagesStyle>
@@ -117,7 +120,7 @@ const Messages = () => {
         </div>
         <div className="message-table">
           <Table<IMessage>
-            data={message?.data}
+            data={message?.data.items}
             error={messagesError}
             header={headers}
             loader={messagesLoading}
@@ -137,12 +140,23 @@ const Messages = () => {
               },
             ]}
           />
+          {!messagesLoading && (
+            <div className="messages-footer">
+              <Pagination
+                total={message?.data.total || 0}
+                limit={messagePagination.limit}
+                offset={messagePagination.offset}
+                onPageChange={(newOffset) =>
+                  setMessagePagination((prev) => ({ ...prev, offset: newOffset }))
+                }
+              />
+            </div>
+          )}
         </div>
         <div className="profile-card">
           <ProfileCard refreshMessages={executeMessagesInfo} />
         </div>
       </div>
-
       <Modal
         activeDiscardModal={false}
         loader={false}

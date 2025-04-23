@@ -56,4 +56,9 @@ export const MessagesStyle = styled.main`
     height: auto;
     object-fit: contain;
   }
+
+  .messages-footer {
+    display: flex;
+    padding: var(--md-spacing) 0 var(--big-spacing) 0;
+  }
 `;

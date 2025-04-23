@@ -6,7 +6,7 @@ import { IProfile } from '@/utils/interface/profile';
 import avatar from '@/assets/avatar.svg';
 import { displayValue } from '@/utils/helpers';
 import Dropdown from '@/components/DropDown';
-import { ISprint } from '@/utils/interface/sprint';
+import { ISprint, ISprintResult } from '@/utils/interface/sprint';
 import { IDropdownOptions } from '@/utils/interface/dropdown';
 import { toast } from 'react-toastify';
 import {
@@ -14,7 +14,7 @@ import {
   messageSendDefaultValues,
   IMessageSendValues,
 } from '@/utils/interface/message';
-import { ITemplates } from '@/utils/interface/template';
+import { ITemplateResult, ITemplates } from '@/utils/interface/template';
 
 interface ProfileCardProps {
   refreshMessages: () => void;
@@ -37,7 +37,7 @@ const ProfileCard = (props: ProfileCardProps) => {
     loading: sprintLoading,
     error: sprintsError,
     execute: executesSprints,
-  } = useFetch<{ success: boolean; message: string; data: ISprint[] }>(
+  } = useFetch<{ success: boolean; message: string; data: ISprintResult }>(
     `${BACK_END_URL}/sprints`,
     'GET',
   );
@@ -47,7 +47,7 @@ const ProfileCard = (props: ProfileCardProps) => {
     loading: templatesLoading,
     error: templatesError,
     execute: executesTemplates,
-  } = useFetch<{ success: boolean; message: string; data: ITemplates[] }>(
+  } = useFetch<{ success: boolean; message: string; data: ITemplateResult }>(
     `${BACK_END_URL}/templates`,
     'GET',
   );
@@ -164,7 +164,7 @@ const ProfileCard = (props: ProfileCardProps) => {
                   <Dropdown
                     defaultSelected={sendValues.sprintCode}
                     placeHolder="Select here"
-                    options={sprints.data.map((sprint: ISprint) => ({
+                    options={sprints.data.items.map((sprint: ISprint) => ({
                       value: sprint.code,
                       label: `${sprint.code} (${sprint.title})`,
                     }))}
@@ -179,7 +179,7 @@ const ProfileCard = (props: ProfileCardProps) => {
                   <Dropdown
                     defaultSelected={sendValues.templateId}
                     placeHolder="Select here"
-                    options={templates.data.map((data: ITemplates) => ({
+                    options={templates.data.items.map((data: ITemplates) => ({
                       value: data.id,
                       label: `${data.id}`,
                     }))}

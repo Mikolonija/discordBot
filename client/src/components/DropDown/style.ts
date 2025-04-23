@@ -31,7 +31,7 @@ export const DropDownStyle = styled.div`
       overflow: auto;
       max-height: 150px;
       background-color: ${(props) => props.theme.dropdownMenuBgColor};
-      z-index: 10000;
+      z-index: 100;
     }
     &-item {
       padding: var(--min-spacing);
