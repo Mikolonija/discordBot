@@ -46,6 +46,8 @@ export const getMessage = async (
     const params: IMessageParams = {
       username: req.query.username?.toString(),
       sprintCode: req.query.sprintCode?.toString(),
+      limit: req.query.limit?.toString(),
+      offset: req.query.offset?.toString(),
     };
     const result = await getMessages(db, params);
     const successResponse: SuccessResponse = createSuccess(
