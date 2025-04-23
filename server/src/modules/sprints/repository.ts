@@ -1,5 +1,10 @@
 import { Database } from '@/database';
-import { ISprint, ISprintBody, ISprintParams } from '@/modules/sprints/types';
+import {
+  ISprint,
+  ISprintBody,
+  ISprintParams,
+  ISprintResult,
+} from '@/modules/sprints/types';
 
 export const createNewSprint = async (db: Database, body: ISprintBody) => {
   const newSprint = db
@@ -10,14 +15,32 @@ export const createNewSprint = async (db: Database, body: ISprintBody) => {
   return newSprint;
 };
 
-export const getAllSprints = async (db: Database): Promise<ISprint[]> => {
-  const sprints = await db
-    .selectFrom('sprint')
-    .selectAll()
-    .orderBy('id', 'desc')
-    .execute();
+export const getAllSprints = async (
+  db: Database,
+  params: ISprintParams
+): Promise<ISprintResult> => {
+  const limit = params.limit ? Number(params.limit) : undefined;
+  const offset = params.offset ? Number(params.offset) : undefined;
 
-  return sprints;
+  const baseQuery = db.selectFrom('sprint').selectAll().orderBy('id', 'desc');
+
+  const paginatedQuery =
+    limit !== undefined && offset !== undefined
+      ? baseQuery.limit(limit).offset(offset)
+      : baseQuery;
+
+  const [totalResult, items] = await Promise.all([
+    db
+      .selectFrom('sprint')
+      .select((eb) => eb.fn.countAll().as('count'))
+      .executeTakeFirst(),
+    paginatedQuery.execute(),
+  ]);
+
+  return {
+    total: Number(totalResult?.count || 0),
+    items,
+  };
 };
 
 export const updateSprintByID = async (
