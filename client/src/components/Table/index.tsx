@@ -29,10 +29,10 @@ const Table = <T,>(props: TableProps<T>) => {
       return (
         <>
           <span className="hide-text">
-            <span data-tooltip-id={colName.toString()} data-tooltip-variant="light">
+            <span data-tooltip-id={String(value)} data-tooltip-variant="light">
               {formatDate(value)}
             </span>
-            <Tooltip place="bottom" id={colName.toString()} content={formatDate(value)}></Tooltip>
+            <Tooltip place="bottom" id={String(value)} content={formatDate(value)}></Tooltip>
           </span>
         </>
       );
@@ -40,10 +40,10 @@ const Table = <T,>(props: TableProps<T>) => {
     return (
       <>
         <span className="hide-text">
-          <span data-tooltip-id={colName.toString()} data-tooltip-variant="light">
+          <span data-tooltip-id={String(value)} data-tooltip-variant="light">
             {displayValue(value)}
           </span>
-          <Tooltip place="bottom" id={colName.toString()} content={displayValue(value)}></Tooltip>
+          <Tooltip place="bottom" id={String(value)} content={displayValue(value)}></Tooltip>
         </span>
       </>
     );

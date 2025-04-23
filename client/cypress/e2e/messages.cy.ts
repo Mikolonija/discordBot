@@ -7,11 +7,9 @@ import {
 
 describe('Messages Get Empty', () => {
   beforeEach(() => {
-    cy.intercept(
-      'GET',
-      `${BACK_END_URL}/messages?limit=0&offset=0&sprintCode=`,
-      fakeMessagesEmpty,
-    ).as('getMessagesEmpty');
+    cy.intercept('GET', `${BACK_END_URL}/messages?limit=6&offset=0`, fakeMessagesEmpty).as(
+      'getMessagesEmpty',
+    );
     cy.visit(FRONT_END_URL);
   });
   it('Displays the "No data" message', () => {
