@@ -112,7 +112,7 @@ const Sprints = () => {
         theme: 'colored',
         closeOnClick: true,
       });
-      setSprintsPagination(defaultPagination);
+      setSprintsPagination({ limit: defaultPagination.limit, offset: defaultPagination.offset });
     }
     if (error) {
       toast.error(String(error), {
