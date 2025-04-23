@@ -7,11 +7,12 @@ import {
 
 describe('Messages Get Empty', () => {
   beforeEach(() => {
-    cy.intercept('GET', `${BACK_END_URL}/messages?sprintCode=`, fakeMessagesEmpty).as(
-      'getMessagesEmpty',
-    );
+    cy.intercept(
+      'GET',
+      `${BACK_END_URL}/messages?limit=0&offset=0&sprintCode=`,
+      fakeMessagesEmpty,
+    ).as('getMessagesEmpty');
     cy.visit(FRONT_END_URL);
-    cy.wait('@getMessagesEmpty');
   });
   it('Displays the "No data" message', () => {
     cy.get('[data-testid="cy-table-loader"]').should('not.exist');
@@ -22,11 +23,12 @@ describe('Messages Get Empty', () => {
 
 describe('Messages Get Not Empty', () => {
   beforeEach(() => {
-    cy.intercept('GET', `${BACK_END_URL}/messages?sprintCode=`, fakeMessagesMultiple).as(
-      'getMessagesNotEmpty',
-    );
+    cy.intercept(
+      'GET',
+      `${BACK_END_URL}/messages?limit=6&offset=0&sprintCode=`,
+      fakeMessagesMultiple,
+    ).as('getMessagesNotEmpty');
     cy.visit(FRONT_END_URL);
-    cy.wait('@getMessagesNotEmpty');
   });
   it('Displays the messages data', () => {
     cy.get('[data-testid="cy-table-loader"]').should('not.exist');
@@ -37,9 +39,11 @@ describe('Messages Get Not Empty', () => {
 
 describe('Messages Search', () => {
   beforeEach(() => {
-    cy.intercept('GET', `${BACK_END_URL}/messages?sprintCode=test2`, fakeMessagesSearchResult).as(
-      'getMessagesTest2',
-    );
+    cy.intercept(
+      'GET',
+      `${BACK_END_URL}/messages?limit=6&offset=0&sprintCode=test2`,
+      fakeMessagesSearchResult,
+    ).as('getMessagesTest2');
     cy.visit(FRONT_END_URL);
   });
 

@@ -8,7 +8,7 @@ const mockedAxios = vi.mocked(axios, true);
 
 describe('Sprint page', () => {
   it('Check does data not empty', async () => {
-    const mockData = { message: 'GET success', data: [{}], success: true };
+    const mockData = { message: 'GET success', data: { total: 0, items: [{}] }, success: true };
     mockedAxios.mockReturnValue(Promise.resolve({ data: mockData }));
     render(<Sprints />);
     await screen.findByTestId('cy-table-loader');
@@ -17,7 +17,7 @@ describe('Sprint page', () => {
   });
 
   it('Check does data empty', async () => {
-    const mockData = { message: 'GET success', data: [], success: true };
+    const mockData = { message: 'GET success', data: { total: 0, items: [] }, success: true };
     mockedAxios.mockReturnValue(Promise.resolve({ data: mockData }));
     render(<Sprints />);
     await screen.findByTestId('cy-table-loader');

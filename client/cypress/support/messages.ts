@@ -17,13 +17,16 @@ const createMessage = (
 export const fakeMessagesEmpty = {
   success: true,
   message: '',
-  data: [],
+  data: { total: 0, items: [{}] },
 };
 
 export const fakeMessagesSearchResult = {
   success: true,
   message: '',
-  data: [createMessage(2, 'tester2', 'test2', 'template-1232', 'channel-abc2')],
+  data: {
+    total: 1,
+    items: [createMessage(2, 'tester2', 'test2', 'template-1232', 'channel-abc2')],
+  },
 };
 
 export const fakeMessagesMultiple = {

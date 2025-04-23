@@ -1,10 +1,6 @@
 import { Database } from '@/database';
 import createError from '@/utils/createError';
-import {
-  IMessageParams,
-  IMessage,
-  IMessageResult,
-} from '@/modules/messages/types';
+import { IMessageParams, IMessageResult } from '@/modules/messages/types';
 
 export const insertMessage = async (
   db: Database,

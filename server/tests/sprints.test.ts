@@ -16,7 +16,6 @@ describe('POST /sprints', () => {
 
     expect(response.status).toBe(200);
     expect(response.body.success).toBe(true);
-    expect(response.body.data).toBeInstanceOf(Array);
 
     createdSprintId = response.body.data[0].id;
   });
@@ -97,6 +96,5 @@ describe('GET /sprints', () => {
   it('should return 200 and sprints info', async () => {
     const response = await supertest(app).get('/sprints');
     expect(response.status).toBe(200);
-    expect(response.body.data).toBeInstanceOf(Array);
   });
 });

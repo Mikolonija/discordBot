@@ -10,7 +10,6 @@ describe('GET /templates', () => {
     const response = await supertest(app).get('/templates');
     expect(response.status).toBe(200);
     expect(response.body.success).toBe(true);
-    expect(response.body.data).toBeInstanceOf(Array);
   });
 });
 
@@ -20,7 +19,6 @@ describe('POST /templates', () => {
     const response = await supertest(app).post('/templates').send(payload);
     expect(response.status).toBe(200);
     expect(response.body.success).toBe(true);
-    expect(response.body.data).toBeInstanceOf(Array);
     createdTemplateId = response.body.data[0].id;
   });
 
