@@ -20,12 +20,9 @@ const Templates = () => {
   const [showAddTemplateModal, setShowAddTemplateModal] = useState<IModalBody>(defaultModal);
   const [showDeleteTemplateModal, setShowDeleteTemplateModal] = useState<IModalBody>(defaultModal);
   const [showEditTemplateModal, setShowEditTemplateModal] = useState<IModalBody>(defaultModal);
-
   const [sendValues, setSendValues] = useState<ITemplateBody>(defaultTemplateBody);
   const [lastFailedValues, setLastFailedValues] = useState<ITemplateBody>(defaultTemplateBody);
-
   const [templatesPagination, setTemplatesPagination] = useState(defaultPagination);
-
   const [templateDeletePath, setTemplateDeletePath] = useState<string>('');
   const [templatePatchPath, setTemplatePatchPath] = useState<string>('');
 

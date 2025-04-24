@@ -3,7 +3,7 @@ import { ModalStyle } from '@/components/Modal/style';
 import { useOutsideClickAndEscape } from '@/hooks/useOutsideClickAndEscape';
 import { IModalBody } from '@/utils/interface/modal';
 
-interface Props {
+interface IProps {
   activeDiscardModal?: boolean;
   loader: boolean;
   children?: React.ReactNode;
@@ -12,7 +12,7 @@ interface Props {
   submitButton?: React.ReactNode;
 }
 
-export const Modal = (props: Props) => {
+export const Modal = (props: IProps) => {
   const { activeDiscardModal, loader, cancelDefaultText, modal, children, submitButton } = props;
   const [idModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isDiscardModal, setIsDiscardModal] = useState<boolean>(false);

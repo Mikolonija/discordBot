@@ -2,13 +2,13 @@ import { useMemo } from 'react';
 import { MAX_VISIBLE_PAGES_DEFAULT } from '@/config';
 import { PaginationStyle } from '@/components/Pagination/style';
 
-interface Props {
+interface IProps {
   total: number;
   limit: number;
   offset: number;
   onPageChange: (newOffset: number) => void;
 }
-const Pagination = (props: Props) => {
+const Pagination = (props: IProps) => {
   const { total, limit, offset, onPageChange } = props;
 
   const totalPages = Math.ceil(total / limit);

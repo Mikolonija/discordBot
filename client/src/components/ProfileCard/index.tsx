@@ -16,11 +16,11 @@ import {
 } from '@/utils/interface/message';
 import { ITemplateResult, ITemplates } from '@/utils/interface/template';
 
-interface ProfileCardProps {
+interface IProps {
   refreshMessages: () => void;
 }
 
-const ProfileCard = (props: ProfileCardProps) => {
+const ProfileCard = (props: IProps) => {
   const { refreshMessages } = props;
   const [sendValues, setSendValues] = useState<IMessageSendValues>(messageSendDefaultValues);
   const [lastFailedValues, setLastFailedValues] = useState<IMessageSendValues | null>(null);

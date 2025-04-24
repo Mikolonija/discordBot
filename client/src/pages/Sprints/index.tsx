@@ -20,12 +20,9 @@ const Sprints = () => {
   const [showAddSprintModal, setShowAddSprintModal] = useState<IModalBody>(defaultModal);
   const [showDeleteSprintModal, setShowDeleteSprintModal] = useState<IModalBody>(defaultModal);
   const [showEditSprintModal, setShowEditSprintModal] = useState<IModalBody>(defaultModal);
-
   const [sprintsPagination, setSprintsPagination] = useState<IPagination>(defaultPagination);
-
   const [sendValues, setSendValues] = useState<ISprintBody>(defaultSendSprintValues);
   const [lastFailedValues, setLastFailedValues] = useState<ISprintBody>(defaultSendSprintValues);
-
   const [sprintDeletePath, setSprintDeletePath] = useState<string>('');
   const [sprintPatchPath, setSprintPatchPath] = useState<string>('');
 
