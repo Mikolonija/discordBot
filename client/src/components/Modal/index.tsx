@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ModalStyle } from './style';
+import { ModalStyle } from '@/components/Modal/style';
 import { useOutsideClickAndEscape } from '@/hooks/useOutsideClickAndEscape';
 import { IModalBody } from '@/utils/interface/modal';
 

@@ -1,6 +1,5 @@
 import { Database } from '@/database';
 import {
-  ISprint,
   ISprintBody,
   ISprintParams,
   ISprintResult,

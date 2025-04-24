@@ -16,6 +16,7 @@ describe('POST /sprints', () => {
 
     expect(response.status).toBe(200);
     expect(response.body.success).toBe(true);
+    expect(response.body.data).toBeInstanceOf(Array);
 
     createdSprintId = response.body.data[0].id;
   });

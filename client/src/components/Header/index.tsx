@@ -1,4 +1,4 @@
-import { HeaderStyle } from './style';
+import { HeaderStyle } from '@/components/Header/style';
 import { Link, useLocation } from 'react-router-dom';
 import { routers } from '@/router/routes';
 import { RouteId } from '@/utils/types/router';
