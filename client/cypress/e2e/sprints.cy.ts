@@ -5,7 +5,6 @@ describe('Sprints Get', () => {
   beforeEach(() => {
     cy.intercept('GET', `${BACK_END_URL}/sprints*`).as('getSprints');
     cy.visit(`${FRONT_END_URL}sprints`);
-    cy.wait('@getSprints');
   });
   it('Displays the sprints', () => {
     cy.get('[data-testid="cy-table-loader"]').should('not.exist');

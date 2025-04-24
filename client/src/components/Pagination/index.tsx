@@ -1,15 +1,16 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { MAX_VISIBLE_PAGES_DEFAULT } from '@/config';
 import { PaginationStyle } from '@/components/Pagination/style';
 
-interface PaginationProps {
+interface Props {
   total: number;
   limit: number;
   offset: number;
   onPageChange: (newOffset: number) => void;
 }
+const Pagination = (props: Props) => {
+  const { total, limit, offset, onPageChange } = props;
 
-const Pagination: React.FC<PaginationProps> = ({ total, limit, offset, onPageChange }) => {
   const totalPages = Math.ceil(total / limit);
   const currentPage = Math.floor(offset / limit) + 1;
 
