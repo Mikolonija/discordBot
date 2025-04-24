@@ -26,7 +26,7 @@ const Table = <T,>(props: IProps<T>) => {
   const { data, header, loader, error, actions } = props;
 
   const renderColumn = <T,>(colName: keyof T, value: T[keyof T]) => {
-    const tooltipId = useId();
+    const tooltipId = crypto.randomUUID();
     if (colName === 'createdAt' && typeof value === 'string') {
       return (
         <>
@@ -36,9 +36,9 @@ const Table = <T,>(props: IProps<T>) => {
             </span>
             <Tooltip
               className="table-tooltip-text"
-              place="left"
+              place="bottom"
               id={tooltipId}
-              content={displayValue(value)}
+              content={formatDate(value)}
             ></Tooltip>
           </span>
         </>
@@ -47,11 +47,11 @@ const Table = <T,>(props: IProps<T>) => {
     return (
       <>
         <span className="hide-text">
-          <span data-tooltip-id={tooltipId} data-tooltip-variant="light">
+          <span data-tooltip-id={tooltipId} data-tooltip-variant="light" className="table-value">
             {displayValue(value)}
           </span>
           <Tooltip
-            place="left"
+            place="bottom"
             id={tooltipId}
             content={displayValue(value)}
             className="table-tooltip-text"

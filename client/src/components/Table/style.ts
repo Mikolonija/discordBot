@@ -1,3 +1,4 @@
+import { media } from '@/utils/media/devices_media';
 import styled from 'styled-components';
 export const TableStyle = styled.table`
   border-collapse: collapse;
@@ -111,6 +112,15 @@ export const TableStyle = styled.table`
     word-wrap: break-word;
     max-width: 250px;
     z-index: 100;
+  }
+  .table-value {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: auto;
+    @media ${media.tablet} {
+      display: block;
+    }
   }
   @keyframes pulse {
     0% {
