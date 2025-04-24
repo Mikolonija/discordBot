@@ -8,7 +8,7 @@ interface Header<T> {
   colName: keyof T;
 }
 
-interface TableProps<T> {
+interface IProps<T> {
   data: T[] | undefined;
   loader: boolean;
   error: unknown;
@@ -21,7 +21,7 @@ interface TableProps<T> {
   }[];
 }
 
-const Table = <T,>(props: TableProps<T>) => {
+const Table = <T,>(props: IProps<T>) => {
   const { data, header, loader, error, actions } = props;
 
   const renderColumn = <T,>(colName: keyof T, value: T[keyof T]) => {
