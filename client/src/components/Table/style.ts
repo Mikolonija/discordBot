@@ -106,7 +106,12 @@ export const TableStyle = styled.table`
     border-radius: var(--min-radius);
     animation: pulse 1.5s infinite ease-in-out;
   }
-
+  .table-tooltip-text {
+    white-space: normal;
+    word-wrap: break-word;
+    max-width: 250px;
+    z-index: 100;
+  }
   @keyframes pulse {
     0% {
       background-color: ${(props) => props.theme.skeletonBgColor1};
