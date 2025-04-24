@@ -208,7 +208,7 @@ const Templates = () => {
           <div>
             <label htmlFor="text" className="template-form-label g-font-normal12">
               Template text*
-              <span className="g-font-normal12">{sendValues.text.length}/130</span>
+              <span className="g-font-normal12">{sendValues.text.length}/300</span>
             </label>
             <textarea
               data-testid="cy-new-template-text-field"
