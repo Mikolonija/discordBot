@@ -144,6 +144,7 @@ const Messages = () => {
               },
             ]}
           />
+
           {message?.data && message?.data.total > defaultPagination.limit && !messagesLoading && (
             <div className="messages-footer">
               <Pagination
