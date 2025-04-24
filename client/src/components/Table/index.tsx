@@ -36,7 +36,7 @@ const Table = <T,>(props: IProps<T>) => {
             </span>
             <Tooltip
               className="table-tooltip-text"
-              place="bottom"
+              place="left"
               id={tooltipId}
               content={displayValue(value)}
             ></Tooltip>
@@ -51,7 +51,7 @@ const Table = <T,>(props: IProps<T>) => {
             {displayValue(value)}
           </span>
           <Tooltip
-            place="bottom"
+            place="left"
             id={tooltipId}
             content={displayValue(value)}
             className="table-tooltip-text"
