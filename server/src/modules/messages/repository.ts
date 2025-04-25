@@ -4,21 +4,21 @@ import { IMessageParams, IMessageResult } from '@/modules/messages/types';
 
 export const insertMessage = async (
   db: Database,
-  username: string,
+  userID: string,
   sprintCode: string,
   templateId: number,
   message: string,
-  giphy: string,
+  gif: string,
   channelId: string
 ) => {
   const result = await db
     .insertInto('message')
     .values({
-      username,
+      userID,
       sprintCode,
       templateId,
       message,
-      giphy,
+      gif,
       channelId,
       createdAt: new Date().toISOString(),
     })
@@ -52,7 +52,6 @@ export const getMessages = async (
   const baseQuery = db
     .selectFrom('message')
     .selectAll()
-    .where('username', 'like', `${params.username ?? ''}%`)
     .where('sprintCode', 'like', `${params.sprintCode ?? ''}%`)
     .orderBy('createdAt', 'desc');
 
@@ -65,7 +64,6 @@ export const getMessages = async (
     db
       .selectFrom('message')
       .select((eb) => eb.fn.countAll().as('count'))
-      .where('username', 'like', `${params.username ?? ''}%`)
       .where('sprintCode', 'like', `${params.sprintCode ?? ''}%`)
       .executeTakeFirst(),
     paginatedQuery.execute(),

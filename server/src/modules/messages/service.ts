@@ -13,26 +13,26 @@ export const sendCongratulatoryMessage = async (
   db: Database,
   body: IMessageBody
 ) => {
-  const isUsernameValid = await isUsernameExist(body.username);
+  const isUsernameValid = await isUsernameExist(body.userID);
   if (!isUsernameValid)
     throw createError('Discord username does not exist', 400);
   const sprintTitle = await isSprintCodeExist(db, body.sprintCode);
   if (!sprintTitle) throw createError('Sprint does not exist', 400);
-  const giphy = await getGif();
-  if (!giphy) throw createError('Could not retrieve GIF', 400);
-  const template = await getMessageTemplate(
-    db,
-    body.templateId ? Number(body.templateId) : 1
-  );
-  const message = `${body.username} ${template.replace('{sprintName}', sprintTitle)}`;
-  await sendDiscordMessage(message, body.channelId, giphy);
+  const gif = await getGif();
+  if (!gif) throw createError('Could not retrieve GIF', 400);
+
+  const template = await getMessageTemplate(db, Number(body.templateId));
+  const message = `<@${body.userID}> ${template.replace('{sprintName}', sprintTitle)}`;
+
+  await sendDiscordMessage(message, body.channelId, gif);
+
   await insertMessage(
     db,
-    body.username,
+    body.userID,
     body.sprintCode,
-    body.templateId ? Number(body.templateId) : 1,
+    Number(body.templateId),
     message,
-    giphy,
+    gif,
     body.channelId
   );
 };

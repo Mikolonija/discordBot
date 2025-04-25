@@ -59,7 +59,7 @@ const ProfileCard = (props: IProps) => {
 
   const sendCelebrationMessage = async () => {
     const messageBody: IMessageBody = {
-      username: profile?.username,
+      userID: profile?.id,
       sprintCode: sendValues.sprintCode,
       channelId: sendValues.channelId,
       templateId: sendValues.templateId,

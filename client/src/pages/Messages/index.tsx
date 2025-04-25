@@ -20,9 +20,9 @@ const Messages = () => {
     submitSearch: null,
     inputSearch: '',
   });
-  const [messageText, setMessageText] = useState<{ message: string; gipthy: string }>({
+  const [messageText, setMessageText] = useState<{ message: string; gif: string }>({
     message: '',
-    gipthy: '',
+    gif: '',
   });
 
   const [messagePagination, setMessagePagination] = useState<IPagination>(defaultPagination);
@@ -53,7 +53,7 @@ const Messages = () => {
       ]
     : [
         { name: 'ID', colName: 'id' },
-        { name: 'Username', colName: 'username' },
+        { name: 'User ID', colName: 'userID' },
         { name: 'Sprint Code', colName: 'sprintCode' },
         { name: 'Channel ID', colName: 'channelId' },
         { name: 'Template ID', colName: 'templateId' },
@@ -68,7 +68,7 @@ const Messages = () => {
   };
 
   const openInfoMessageModal = (row: IMessage, show: boolean, titleText: string): void => {
-    setMessageText({ message: row.message, gipthy: row.giphy });
+    setMessageText({ message: row.message, gif: row.gif });
     setShowMessageTextModal({ showDialog: show, title: titleText });
   };
 
@@ -131,8 +131,8 @@ const Messages = () => {
             actions={[
               {
                 testId: 'cy-info-message-btn',
-                label: 'Details',
-                onClick: (row) => openInfoMessageModal(row, true, 'Message text'),
+                label: 'Message',
+                onClick: (row) => openInfoMessageModal(row, true, 'Message'),
                 btnType: ButtonType.Edit,
               },
 
@@ -170,7 +170,7 @@ const Messages = () => {
       >
         <div>
           <p className="g-font-normal14 message-text">{displayValue(messageText.message)}</p>
-          {messageText.gipthy && <img src={messageText.gipthy} alt="" className="message-gif" />}
+          {messageText.gif && <img src={messageText.gif} alt="" className="message-gif" />}
         </div>
       </Modal>
       <Modal

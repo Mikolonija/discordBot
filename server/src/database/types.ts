@@ -13,11 +13,11 @@ export interface Template {
 
 export interface Message {
   id: Generated<number>;
-  username: string;
+  userID: string;
   sprintCode: string;
   templateId: number;
   message: string;
-  giphy: string;
+  gif: string;
   channelId: string;
   createdAt: Generated<string>;
 }

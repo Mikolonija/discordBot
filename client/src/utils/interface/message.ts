@@ -1,16 +1,16 @@
 export interface IMessage {
   id: number;
-  username: string;
+  userID: string;
   sprintCode: string;
   templateId: string;
   message: string;
-  giphy: string;
+  gif: string;
   channelId: string;
   createdAt: string;
 }
 
 export interface IMessageBody {
-  username?: string;
+  userID?: string;
   sprintCode: string;
   channelId: string;
   templateId: string;

@@ -1,12 +1,12 @@
 export interface IMessageBody {
-  username: string;
+  userID: string;
   sprintCode: string;
   channelId: string;
   templateId: string;
 }
 
 export interface IMessageParams {
-  username?: string;
+  userID?: string;
   sprintCode?: string;
   limit?: string;
   offset?: string;
@@ -18,11 +18,11 @@ export interface IMessagePath {
 
 export interface IMessage {
   id: number;
-  username: string;
+  userID: string;
   sprintCode: string;
   templateId: number;
   message: string;
-  giphy: string;
+  gif: string;
   channelId: string;
   createdAt: string;
 }
