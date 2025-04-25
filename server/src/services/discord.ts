@@ -33,32 +33,24 @@ export const initializeDiscordService = () => {
 export const sendDiscordMessage = async (
   message: string,
   channelId: string,
-  giphy?: string
+  gif: string
 ) => {
+  if (!client.isReady()) {
+    throw createError('Discord client is not ready', 400);
+  }
   try {
-    if (!client.isReady()) {
-      throw createError('Discord client is not ready', 400);
-    }
     const channel = await client.channels.fetch(channelId);
-    if (!channel) throw createError('Channel not found', 400);
-
-    if (channel instanceof TextChannel) {
-      const embed = giphy ? new EmbedBuilder().setImage(giphy) : undefined;
-      await channel.send({
-        content: message,
-        embeds: embed ? [embed] : [],
-      });
-    } else {
-      throw createError('The channel is not a valid', 400);
+    if (!(channel instanceof TextChannel)) {
+      throw createError('Invalid channel type', 400);
     }
-  } catch (error: Error | unknown) {
-    if (error instanceof Error) {
-      throw createError(error?.message as string, 400);
-    }
+    const embeds = [new EmbedBuilder().setImage(gif)];
+    await channel.send({ content: message, embeds });
+  } catch (err: any) {
+    throw createError(err?.message || 'Failed to send message', 400);
   }
 };
 
-export const isUsernameExist = async (username: string): Promise<boolean> => {
+export const isUsernameExist = async (userId: string): Promise<boolean> => {
   if (!process.env.DISCORD_SERVER_ID) {
     throw createError(
       'DISCORD_SERVER_ID is missing from environment variables',
@@ -67,19 +59,9 @@ export const isUsernameExist = async (username: string): Promise<boolean> => {
   }
   try {
     const guild = await client.guilds.fetch(process.env.DISCORD_SERVER_ID);
-    if (!guild) {
-      return false;
-    }
     const members = await guild.members.fetch();
-    const matchingMembers = members.filter(
-      (member) => member.user.username.toLowerCase() === username.toLowerCase()
-    );
-    if (matchingMembers.size === 1) {
-      return true;
-    } else {
-      return false;
-    }
-  } catch (error) {
+    return members.has(userId);
+  } catch {
     return false;
   }
 };

@@ -17,9 +17,9 @@ export const postMessage = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { username, sprintCode, channelId, templateId }: IMessageBody =
+    const { userID, sprintCode, channelId, templateId }: IMessageBody =
       req.body;
-    if (!username) throw createError('Missing required field username ', 400);
+    if (!userID) throw createError('Missing required field userID ', 400);
     if (!sprintCode)
       throw createError('Missing required fields sprintCode', 400);
     if (!channelId) throw createError('Missing required fields channelId', 400);
@@ -44,7 +44,7 @@ export const getMessage = async (
 ): Promise<void> => {
   try {
     const params: IMessageParams = {
-      username: req.query.username?.toString(),
+      userID: req.query.userID?.toString(),
       sprintCode: req.query.sprintCode?.toString(),
       limit: req.query.limit?.toString(),
       offset: req.query.offset?.toString(),
